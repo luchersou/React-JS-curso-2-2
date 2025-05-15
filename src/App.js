@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function App() {
 
@@ -6,12 +6,13 @@ function App() {
   const [input, setInput] = useState('');
 
 
-  useEffect(() => {  // Corrigido: Estava faltando o '=' após '>'
+  useEffect(() => {  
     const tarefasStorage = localStorage.getItem('tarefas');
     
     if(tarefasStorage){
       setTarefas(JSON.parse(tarefasStorage));
     }
+
   }, []);
 
 
@@ -25,6 +26,8 @@ function App() {
     setInput('');
   }
 
+  const totalTarefas = useMemo(() => tarefas.length, [tarefas])
+
   return (
     <div>
         <ul>
@@ -32,6 +35,8 @@ function App() {
             <li key={tarefa}>{tarefa}</li>
           ))}
         </ul>
+        <br/>
+        <strong>Voce tem {totalTarefas} tarefas!</strong><br/>
         <input type="text" value={input} onChange={e => setInput(e.target.value)}></input>
         <button type="button" onClick={handleAdd}>Adicionar</button>
     </div>
